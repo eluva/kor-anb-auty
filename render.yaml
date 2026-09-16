@@ -12,9 +12,12 @@ services:
     name: korean-beauty
     runtime: node
     plan: free
-    # Франкфурт — ближайший к Узбекистану регион Render.
-    # Базу в Turso — в ближайшем к нему регионе: aws-eu-west-1 (Ирландия).
-    region: frankfurt
+    # Сервер должен стоять рядом с базой: на одну страницу к ней около пяти
+    # обращений подряд. База Turso — в Токио (бесплатный тариф даёт одну группу,
+    # регион не сменить), ближайший к Токио регион Render — Сингапур.
+    # Франкфурт ближе к Нукусу, но с базой в Токио страницы грузились бы
+    # примерно на секунду дольше.
+    region: singapore
     buildCommand: npm ci --omit=dev
     startCommand: node --no-warnings server/index.js
     # Render проверяет этот адрес: база не отвечает — 503, и сервис
@@ -41,7 +44,7 @@ services:
         generateValue: true
 
       # Эти три Render спросит при создании — значения из Turso и адрес сайта.
-      - key: KB_DB_URL          # libsql://korean-beauty-ЛОГИН.aws-eu-west-1.turso.io
+      - key: KB_DB_URL          # libsql://korean-beauty-eluva.aws-ap-northeast-1.turso.io
         sync: false
       - key: KB_DB_TOKEN        # токен базы из панели Turso (Read & Write)
         sync: false

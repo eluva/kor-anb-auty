@@ -106,9 +106,13 @@ Telegram-бот — сейчас лежит в `data/shop.db`. На сервер
 1. Зарегистрируйтесь на **turso.tech** (удобно через GitHub).
 2. Создайте базу: **Create Database**
    - имя: `korean-beauty`
-   - регион: **AWS EU West (Ireland)** — `aws-eu-west-1`, ближайший к серверу Render.
+   - регион задаёт группа `default`. На бесплатном тарифе группа одна, и её
+     регион не сменить. У этого магазина это Токио (`aws-ap-northeast-1`),
+     поэтому сервер Render стоит в ближайшем к нему Сингапуре (`render.yaml`).
+     Если у вас другой регион, поменяйте `region` в `render.yaml` на ближайший
+     к нему: frankfurt, singapore, oregon, ohio или virginia.
 3. На странице базы скопируйте **адрес** — вида
-   `libsql://korean-beauty-ВАШ-ЛОГИН.aws-eu-west-1.turso.io`.
+   `libsql://korean-beauty-ВАШ-ЛОГИН.aws-ap-northeast-1.turso.io`.
 4. Создайте **токен** (Create Token / Generate Token): доступ **Read & Write**,
    срок **Never**. Скопируйте — он показывается один раз.
 
@@ -121,7 +125,7 @@ Telegram-бот — сейчас лежит в `data/shop.db`. На сервер
 затем в PowerShell:
 
 ```powershell
-$env:KB_DB_URL   = "libsql://korean-beauty-ВАШ-ЛОГИН.aws-eu-west-1.turso.io"
+$env:KB_DB_URL   = "libsql://korean-beauty-eluva.aws-ap-northeast-1.turso.io"
 $env:KB_DB_TOKEN = "ваш-токен"
 
 npm run db:push          # предпросмотр: что и куда перенесётся
@@ -140,8 +144,8 @@ npm run preflight        # проверка уже боевой базы
 ### А4. Сайт на Render
 
 1. Зарегистрируйтесь на **render.com** через GitHub.
-2. **New** → **Blueprint** → выберите репозиторий `korean-beauty`.
-   Render прочитает `render.yaml`: бесплатный тариф, Франкфурт, проверка здоровья.
+2. **New** → **Blueprint** → выберите репозиторий `kor-anb-auty`.
+   Render прочитает `render.yaml`: бесплатный тариф, Сингапур, проверка здоровья.
 3. Render попросит три значения:
 
    | Переменная | Значение |
