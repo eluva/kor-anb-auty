@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500" role="img" aria-label="Rice Daily Body Lotion">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FBE9EC"/><stop offset="1" stop-color="#F3CBD3"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.42" r="0.55">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="500" height="500" fill="url(#g)"/>
+  <circle cx="250" cy="270" r="170" fill="url(#glow)"/>
+  <ellipse cx="250" cy="418" rx="120" ry="16" fill="#B4707F" opacity="0.16"/>
+  <rect x="176" y="220" width="148" height="182" rx="22" fill="#B4707F" opacity="0.92"/>
+              <rect x="228" y="148" width="44" height="76" rx="10" fill="#B4707F" opacity="0.6"/>
+              <rect x="212" y="128" width="86" height="26" rx="13" fill="#B4707F" opacity="0.6"/>
+  <text x="250" y="62" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
+        font-size="21" letter-spacing="4" fill="#B4707F" opacity="0.85">ROUND LAB</text>
+  <text x="250" y="466" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif"
+        font-size="16" letter-spacing="1.5" fill="#B4707F" opacity="0.6">KOREAN BEAUTY · NUKUS</text>
+</svg>

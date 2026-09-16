@@ -1,0 +1,24 @@
+# ==========================================================================
+#  Ежедневная резервная копия в 03:30 по времени сервера
+#
+#  Установка:
+#    sudo cp deploy/korean-beauty-backup.service deploy/korean-beauty-backup.timer /etc/systemd/system/
+#    sudo systemctl daemon-reload
+#    sudo systemctl enable --now korean-beauty-backup.timer
+#
+#  Проверка:
+#    systemctl list-timers korean-beauty-backup     — когда следующий запуск
+#    sudo systemctl start korean-beauty-backup      — сделать копию прямо сейчас
+#    journalctl -u korean-beauty-backup -n 20       — итог последней копии
+# ==========================================================================
+[Unit]
+Description=Korean Beauty — ежедневная резервная копия
+
+[Timer]
+OnCalendar=*-*-* 03:30:00
+# Если сервер был выключен в 03:30 — сделать копию при включении
+Persistent=true
+RandomizedDelaySec=10min
+
+[Install]
+WantedBy=timers.target

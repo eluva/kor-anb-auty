@@ -1,0 +1,49 @@
+# Korean Beauty на Render (бесплатный тариф) + база Turso.
+#
+# Render читает этот файл сам: New → Blueprint → выбрать репозиторий.
+# Пошагово — DEPLOY.md, «Путь А. Render + Turso».
+#
+# Диск на бесплатном Render стирается при каждом перезапуске, поэтому
+# товары, заказы, фото и настройки хранятся в Turso, а сервер ничего не
+# держит у себя. Перезапуск или засыпание ничего не теряют.
+
+services:
+  - type: web
+    name: korean-beauty
+    runtime: node
+    plan: free
+    # Франкфурт — ближайший к Узбекистану регион Render.
+    # Базу в Turso — в ближайшем к нему регионе: aws-eu-west-1 (Ирландия).
+    region: frankfurt
+    buildCommand: npm ci --omit=dev
+    startCommand: node --no-warnings server/index.js
+    # Render проверяет этот адрес: база не отвечает — 503, и сервис
+    # считается неисправным. Будильник (DEPLOY.md, шаг А5) ходит сюда же.
+    healthCheckPath: /healthz
+    autoDeployTrigger: commit
+
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+
+      # Перед магазином стоят Cloudflare и балансировщик Render.
+      # cloudflare — видеть настоящий IP покупательницы и не давать его подделать
+      # (иначе лимит «5 заказов за 10 минут» считал бы всех как одну). См. server/proxy.js
+      - key: KB_TRUST_PROXY
+        value: cloudflare
+
+      # Ключ подписи входа в админку. Render создаст случайный сам.
+      - key: KB_SECRET
+        generateValue: true
+
+      # Эти три Render спросит при создании — значения из Turso и адрес сайта.
+      - key: KB_DB_URL          # libsql://korean-beauty-ЛОГИН.aws-eu-west-1.turso.io
+        sync: false
+      - key: KB_DB_TOKEN        # токен базы из панели Turso (Read & Write)
+        sync: false
+      - key: KB_PUBLIC_URL      # https://korean-beauty.onrender.com (или свой домен)
+        sync: false

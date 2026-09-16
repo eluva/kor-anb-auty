@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Обработка персональных данных — Korean Beauty, Нукус</title>
+<meta name="description" content="Какие данные Korean Beauty собирает при заказе, зачем и как их удалить.">
+<meta name="theme-color" content="#A65A63">
+<link rel="icon" href="/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<div class="wrap">
+  <nav class="breadcrumbs">
+    <a href="/">Главная</a> <span aria-hidden="true">/</span> <span>Обработка данных</span>
+  </nav>
+</div>
+
+<main class="wrap" style="padding-bottom:var(--s-6)">
+  <div class="page-head">
+    <h1 class="display d-lg">Как мы обращаемся с вашими данными</h1>
+    <p>Коротко и без юридического тумана.</p>
+  </div>
+
+  <div style="max-width:68ch;margin-top:var(--s-4)">
+    <div class="panel">
+      <h3>Что мы спрашиваем при заказе</h3>
+      <ul style="padding-left:1.2em;color:var(--ink-2)">
+        <li><b>Имя</b> — чтобы знать, как к вам обращаться.</li>
+        <li><b>Телефон</b> — чтобы подтвердить заказ и согласовать доставку.</li>
+        <li><b>Адрес</b> — только если вы выбрали доставку курьером.</li>
+        <li><b>Telegram и комментарий</b> — по желанию, можно не заполнять.</li>
+      </ul>
+      <p style="margin-bottom:0;color:var(--ink-3)">
+        Больше ничего не спрашиваем. Паспортные данные, дату рождения и данные карты
+        мы не собираем — оплата проходит при получении или напрямую через Payme и Click.
+      </p>
+    </div>
+
+    <div class="panel">
+      <h3>Зачем это нужно</h3>
+      <p style="margin-bottom:0">
+        Только чтобы выполнить ваш заказ: связаться, собрать посылку и привезти её.
+        Мы не продаём и не передаём ваши данные третьим лицам и не используем их
+        для рассылок, если вы сами об этом не попросили.
+      </p>
+    </div>
+
+    <div class="panel">
+      <h3>Где они хранятся</h3>
+      <p style="margin-bottom:0">
+        Заказы хранятся в базе данных магазина, доступ к ней есть только
+        у владельца Korean Beauty. Уведомление о новом заказе приходит продавцу
+        в Telegram. Корзина и избранное хранятся прямо в вашем браузере
+        и на наш сервер не передаются.
+      </p>
+    </div>
+
+    <div class="panel">
+      <h3>Как удалить свои данные</h3>
+      <p>
+        Напишите нам в Telegram или позвоните — удалим историю ваших заказов
+        по первой просьбе, без объяснения причин.
+      </p>
+      <div class="hero-cta" style="margin-bottom:0">
+        <a class="btn" id="privacy-tg" href="#" target="_blank" rel="noopener">Написать в Telegram</a>
+        <a class="btn btn-ghost" id="privacy-phone" href="#">Позвонить</a>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Cookie</h3>
+      <p style="margin-bottom:0">
+        Мы не используем рекламные и следящие cookie. Единственная cookie на сайте —
+        техническая, она держит вход владельца в админ-панель. Покупателей она не касается.
+      </p>
+    </div>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="/js/icons.js"></script>
+<script src="/js/app.js"></script>
+<script>
+  (async function () {
+    const meta = await window.KB.boot();
+    if (!meta) return;
+    const s = meta.settings;
+    document.getElementById('privacy-tg').href = `https://t.me/${s.telegram}`;
+    const phone = document.getElementById('privacy-phone');
+    phone.href = `tel:${s.phone.replace(/\s/g, '')}`;
+    phone.textContent = s.phone;
+  })();
+</script>
+</body>
+</html>

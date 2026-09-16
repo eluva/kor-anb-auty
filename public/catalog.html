@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Каталог корейской косметики — Korean Beauty, Нукус</title>
+<meta name="description" content="Каталог оригинальной корейской косметики: тонеры, сыворотки, кремы, SPF, маски. Фильтры по бренду, типу кожи и задаче. Доставка по Нукусу.">
+<meta name="theme-color" content="#191512">
+<link rel="icon" href="/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<div class="wrap">
+  <nav class="breadcrumbs">
+    <a href="/">Главная</a> <span aria-hidden="true">/</span> <span id="crumb">Каталог</span>
+  </nav>
+</div>
+
+<div class="wrap">
+  <header class="page-head">
+    <h1 class="display d-lg" id="catalog-title">Каталог</h1>
+    <p id="catalog-sub">Оригинальная корейская косметика в наличии в Нукусе</p>
+  </header>
+</div>
+
+<div class="wrap">
+  <div class="catalog-layout">
+
+    <!-- ---------- Фильтры ---------- -->
+    <aside class="filters" id="filters">
+      <div class="filters-title">
+        <span class="label">Фильтры</span>
+        <button class="icon-btn" id="close-filters" aria-label="Закрыть фильтры"></button>
+      </div>
+
+      <details class="filter-group" open>
+        <summary>Раздел</summary>
+        <div class="filter-list" id="f-category"></div>
+      </details>
+
+      <details class="filter-group" open>
+        <summary>Бренд</summary>
+        <div class="filter-list" id="f-brand"></div>
+      </details>
+
+      <details class="filter-group" open>
+        <summary>Цена, сум</summary>
+        <div class="price-inputs">
+          <input type="number" id="f-min" placeholder="от" min="0" inputmode="numeric">
+          <span>—</span>
+          <input type="number" id="f-max" placeholder="до" min="0" inputmode="numeric">
+        </div>
+      </details>
+
+      <details class="filter-group" open>
+        <summary>Тип кожи</summary>
+        <div class="filter-list" id="f-skin"></div>
+      </details>
+
+      <details class="filter-group">
+        <summary>Что беспокоит</summary>
+        <div class="filter-list" id="f-concern"></div>
+      </details>
+
+      <details class="filter-group" open>
+        <summary>Дополнительно</summary>
+        <div class="filter-list">
+          <label class="check"><input type="checkbox" id="f-instock"><span class="box"></span>Только в наличии</label>
+          <label class="check"><input type="checkbox" id="f-sale"><span class="box"></span>Со скидкой</label>
+          <label class="check"><input type="checkbox" id="f-new"><span class="box"></span>Новинки</label>
+          <label class="check"><input type="checkbox" id="f-fav"><span class="box"></span>Избранное</label>
+        </div>
+      </details>
+
+      <button class="btn btn-ghost btn-block btn-sm" id="reset-filters" style="margin-top:22px">Сбросить фильтры</button>
+      <button class="btn btn-block" id="apply-filters" style="margin-top:8px;display:none">Показать результаты</button>
+    </aside>
+
+    <!-- ---------- Результаты ---------- -->
+    <div>
+      <div class="catalog-toolbar">
+        <button class="btn btn-ghost btn-sm filters-toggle" id="open-filters">Фильтры и подбор</button>
+        <span class="catalog-count" id="count">Загружаем…</span>
+        <select class="select" id="sort" aria-label="Сортировка">
+          <option value="popular">Сначала популярные</option>
+          <option value="new">Сначала новинки</option>
+          <option value="price_asc">Цена: по возрастанию</option>
+          <option value="price_desc">Цена: по убыванию</option>
+          <option value="rating">По рейтингу</option>
+          <option value="name">По названию</option>
+        </select>
+      </div>
+
+      <div class="chips" id="active-chips"></div>
+      <div class="products" id="grid"></div>
+      <div class="pagination" id="pagination"></div>
+    </div>
+
+  </div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="/js/icons.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/catalog.js"></script>
+</body>
+</html>

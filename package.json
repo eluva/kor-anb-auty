@@ -1,0 +1,31 @@
+{
+  "name": "korean-beauty",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Korean Beauty — интернет-магазин корейской косметики, г. Нукус",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node --no-warnings server/index.js",
+    "dev": "node --no-warnings --watch server/index.js",
+    "seed": "node --no-warnings server/seed.js",
+    "reset": "node --no-warnings server/seed.js --force",
+    "test": "node --no-warnings server/smoke.js",
+    "test:browser": "node --no-warnings server/browser-test.js",
+    "password": "node --no-warnings server/password.js",
+    "share": "node --no-warnings server/share.js",
+    "audit:layout": "node --no-warnings server/layout-audit.js",
+    "preflight": "node --no-warnings server/preflight.js",
+    "backup": "node --no-warnings server/backup.js",
+    "demo:clear": "node --no-warnings server/demo-clear.js",
+    "db:push": "node --no-warnings server/db-push.js"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.18.0",
+    "compression": "^1.8.2",
+    "express": "^4.21.2",
+    "multer": "^1.4.5-lts.1"
+  }
+}

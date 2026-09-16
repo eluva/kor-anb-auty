@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Оформление заказа — Korean Beauty, Нукус</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#191512">
+<link rel="icon" href="/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<div class="wrap">
+  <nav class="breadcrumbs"><a href="/">Главная</a> <span>/</span> <a href="/catalog">Каталог</a> <span>/</span> <span>Оформление</span></nav>
+  <header class="page-head" style="margin-bottom:40px">
+    <h1 class="display d-lg">Оформление заказа</h1>
+    <p>Заполните два поля — имя и телефон. Остальное по желанию.</p>
+  </header>
+</div>
+
+<main class="wrap" style="padding-bottom:60px" id="checkout-root">
+
+  <div class="checkout-layout" id="checkout-form-layout">
+    <!-- ---------- Форма ---------- -->
+    <form id="order-form" novalidate>
+      <div class="panel">
+        <h3><span class="p-num">01</span>Контактные данные</h3>
+        <div class="field-row">
+          <div class="field">
+            <label for="f-name">Имя <span>*</span></label>
+            <input id="f-name" name="name" autocomplete="name" placeholder="Как к вам обращаться" required>
+          </div>
+          <div class="field">
+            <label for="f-phone">Телефон <span>*</span></label>
+            <input id="f-phone" name="phone" type="tel" autocomplete="tel" placeholder="+998 __ ___ __ __" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-tg">Telegram (необязательно)</label>
+          <input id="f-tg" name="telegram" placeholder="@username">
+          <div class="hint">Так нам будет удобнее подтвердить заказ и отправить фото товара.</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3><span class="p-num">02</span>Способ получения</h3>
+        <div class="radio-cards" id="delivery-options">
+          <label class="radio-card on">
+            <input type="radio" name="delivery" value="pickup" checked>
+            <div><b>Самовывоз в Нукусе</b><span id="pickup-addr">Заберёте сами, бесплатно</span></div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="delivery" value="delivery">
+            <div><b>Доставка курьером</b><span id="delivery-note">По Нукусу — в день заказа</span></div>
+          </label>
+        </div>
+        <div class="field hidden" id="address-field" style="margin-top:16px">
+          <label for="f-address">Адрес доставки <span>*</span></label>
+          <textarea id="f-address" name="address" placeholder="Улица, дом, квартира, ориентир"></textarea>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3><span class="p-num">03</span>Комментарий</h3>
+        <div class="field" style="margin-bottom:0">
+          <label for="f-comment">Пожелания к заказу</label>
+          <textarea id="f-comment" name="comment" placeholder="Удобное время доставки, вопросы по товарам, подбор ухода…"></textarea>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3><span class="p-num">04</span>Оплата</h3>
+        <p style="color:var(--ink-3);font-size:.87rem;margin:0">
+          Оплата после подтверждения заказа: наличными при получении, Payme, Click или переводом на карту.
+          Мы свяжемся с вами в течение 15 минут в рабочее время.
+        </p>
+      </div>
+    </form>
+
+    <!-- ---------- Сводка ---------- -->
+    <div class="summary-sticky">
+      <div class="panel">
+        <h3>Ваш заказ</h3>
+        <div id="summary-items"></div>
+        <div class="cart-totals" style="margin-top:16px">
+          <div><span>Товары</span><span id="sum-goods">—</span></div>
+          <div><span>Доставка</span><span id="sum-ship">—</span></div>
+          <div class="total"><span>К оплате</span><span id="sum-total">—</span></div>
+        </div>
+        <button class="btn btn-block" id="submit-order" form="order-form" type="submit">Подтвердить заказ</button>
+        <p style="font-size:.76rem;color:var(--ink-3);text-align:center;margin:12px 0 0">
+          Нажимая кнопку, вы соглашаетесь на обработку контактных данных для выполнения заказа.
+        </p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="/js/icons.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/checkout.js"></script>
+</body>
+</html>

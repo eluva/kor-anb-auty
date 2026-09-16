@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Korean Beauty — корейская косметика в Нукусе | Оригинал из Кореи</title>
+<meta name="description" content="Интернет-магазин корейской косметики Korean Beauty в Нукусе. Оригинальный skincare прямиком из Кореи: COSRX, Beauty of Joseon, Anua, Laneige, Medicube. Доставка по Нукусу и Узбекистану.">
+<meta name="theme-color" content="#191512">
+<meta property="og:title" content="Korean Beauty — корейская косметика в Нукусе">
+<meta property="og:description" content="Настоящая корейская косметика прямиком из Кореи. Лучшие бренды, доставка по Нукусу.">
+<meta property="og:type" content="website">
+<link rel="icon" href="/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-copy">
+      <span class="label">Нукус · с 2017 года</span>
+      <h1 class="display d-xl">
+        Настоящая корейская <em class="gold">косметика</em>
+      </h1>
+      <p class="lead">
+        Mostly skincare. Возим оригиналы из Сеула небольшими партиями и помогаем
+        собрать уход под вашу кожу. Доставка по Нукусу — в день заказа.
+      </p>
+      <div class="hero-cta">
+        <a class="btn" href="/catalog">Смотреть каталог</a>
+        <a class="link" href="#quiz">Подобрать уход <span id="hero-arrow"></span></a>
+      </div>
+      <dl class="hero-stats">
+        <div><dt id="stat-products">—</dt><dd id="stat-products-label">средств в наличии</dd></div>
+        <div><dt id="stat-brands">—</dt><dd id="stat-brands-label">корейских брендов</dd></div>
+        <div><dt>8</dt><dd>лет в Нукусе</dd></div>
+      </dl>
+    </div>
+
+    <figure class="hero-figure" id="hero-figure"></figure>
+  </div>
+</section>
+
+<!-- ═══════════════════ ГАРАНТИИ ═══════════════════ -->
+<div class="wrap">
+  <div class="promise" id="promise"></div>
+</div>
+
+<!-- ═══════════════════ 01 · БРЕНДЫ ═══════════════════ -->
+<section class="section-tight">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <h2 class="display d-md">Бренды, которые мы возим</h2>
+        <p class="sec-note">Каждую марку возим напрямую — без посредников и перекупов.</p>
+      </div>
+      <a class="link sec-link" href="/catalog">Весь каталог</a>
+    </div>
+    <nav class="brand-index reveal" id="brand-index" aria-label="Бренды"></nav>
+  </div>
+</section>
+
+<!-- ═══════════════════ 02 · РАЗДЕЛЫ ═══════════════════ -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <h2 class="display d-md">Разделы ухода</h2>
+        <p class="sec-note">Полная корейская рутина — от двойного очищения до солнцезащиты.</p>
+      </div>
+    </div>
+    <div class="cat-grid reveal" id="categories"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 03 · ХИТЫ ═══════════════════ -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <h2 class="display d-md">Хиты продаж</h2>
+        <p class="sec-note">То, за чем возвращаются по второму и третьему разу.</p>
+      </div>
+      <a class="link sec-link" href="/catalog?sort=popular">Все хиты</a>
+    </div>
+    <div class="products" id="featured"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 04 · ПОДБОР ═══════════════════ -->
+<section class="section section-blush" id="quiz">
+  <div class="wrap">
+    <div class="quiz-grid">
+      <div class="reveal">
+        <span class="label">Подбор за 10 секунд</span>
+        <h2 class="display d-lg" style="margin:10px 0 16px">Подберём уход за 10 секунд</h2>
+        <p class="lead">
+          Отметьте тип кожи и то, что беспокоит — покажем только те средства,
+          которые вам подходят и есть в наличии в Нукусе.
+        </p>
+        <p style="color:var(--ink-3)">
+          Не уверены в типе кожи? Напишите нам в Telegram, поможем разобраться
+          и подберём рутину бесплатно.
+        </p>
+      </div>
+      <div class="reveal">
+        <div class="quiz-card">
+          <div class="quiz-field">
+            <span class="label">1. Ваш тип кожи</span>
+            <div class="quiz-opts" id="quiz-skin"></div>
+          </div>
+          <div class="quiz-field">
+            <span class="label">2. Что беспокоит</span>
+            <div class="quiz-opts" id="quiz-concern"></div>
+          </div>
+          <a class="btn btn-block" id="quiz-go" href="/catalog" style="margin-top:28px">Показать подходящие средства</a>
+          <p style="font-size:.9rem;color:var(--ink-3);text-align:center;margin:12px 0 0">
+            Можно выбрать только одно — или ничего, тогда покажем весь каталог.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 05 · НОВИНКИ ═══════════════════ -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <h2 class="display d-md">Новинки</h2>
+        <p class="sec-note">Свежая партия из Сеула и лучшие цены недели.</p>
+      </div>
+      <a class="link sec-link" href="/catalog?new=1">Все новинки</a>
+    </div>
+    <div class="products" id="fresh"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 06 · О МАГАЗИНЕ ═══════════════════ -->
+<section class="section" id="about">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <h2 class="display d-md">О магазине</h2>
+      </div>
+    </div>
+    <div class="about-grid">
+      <div class="reveal">
+        <p class="dropcap lead">
+          Korean Beauty начиналась в 2017 году с личных заказов для подруг — пара
+          баночек тонера в чемодане из Сеула. Сегодня нас знают по всему Нукусу
+          и Каракалпакстану, но принцип не поменялся: мы привозим только то,
+          чем пользуемся сами.
+        </p>
+        <div class="about-cols">
+          <p>
+            Каждую партию проверяем перед отправкой покупателю: срок годности,
+            батч-код, целостность упаковки. Если средство пришло с браком —
+            меняем или возвращаем деньги, без разговоров.
+          </p>
+          <p>
+            Не знаете, с чего начать? Напишите в Telegram: разберём вашу кожу,
+            бюджет и сезон и соберём рутину из 3–4 средств. Бесплатно и без
+            попыток продать весь прайс.
+          </p>
+        </div>
+      </div>
+      <div class="reveal">
+        <blockquote class="pullquote">
+          «Заказываю третий год. Тонер Anua и SPF Beauty of Joseon — всегда
+          оригинал, всё как в Корее. Привезли в тот же день.»
+          <cite>Мадина · Нукус</cite>
+        </blockquote>
+        <blockquote class="pullquote">
+          «Помогли собрать уход для проблемной кожи. Через месяц лицо
+          не узнать. Спасибо за консультацию.»
+          <cite>Айгуль · Нукус</cite>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 07 · ДОСТАВКА ═══════════════════ -->
+<section class="section" id="delivery">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <h2 class="display d-md">Как получить заказ</h2>
+      </div>
+      <a class="link sec-link" id="delivery-tg" href="#" target="_blank" rel="noopener">Задать вопрос</a>
+    </div>
+    <div class="steps reveal">
+      <div>
+        <span class="st-num">01</span>
+        <b>Оформляете заказ</b>
+        <span>На сайте или в Telegram. Перезвоним в течение 15 минут в рабочее время.</span>
+      </div>
+      <div>
+        <span class="st-num">02</span>
+        <b>Подтверждаем наличие</b>
+        <span id="step-pay">Согласуем состав и способ оплаты: наличные, Payme, Click или перевод на карту.</span>
+      </div>
+      <div>
+        <span class="st-num">03</span>
+        <b>Привозим</b>
+        <span id="step-ship">По Нукусу — в день заказа. По Узбекистану — курьерской службой, 2–4 дня.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+
+<script src="/js/icons.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/home.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500" role="img" aria-label="Madagascar Centella Ampoule Foam Cream">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFF7E3"/><stop offset="1" stop-color="#F5E3B0"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.42" r="0.55">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="500" height="500" fill="url(#g)"/>
+  <circle cx="250" cy="270" r="170" fill="url(#glow)"/>
+  <ellipse cx="250" cy="418" rx="120" ry="16" fill="#B29334" opacity="0.16"/>
+  <path d="M190 168h120l14 232a26 26 0 0 1-26 28H202a26 26 0 0 1-26-28z" fill="#B29334" opacity="0.92"/>
+              <rect x="196" y="146" width="108" height="30" rx="12" fill="#B29334" opacity="0.55"/>
+  <text x="250" y="62" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
+        font-size="21" letter-spacing="4" fill="#B29334" opacity="0.85">SKIN1004</text>
+  <text x="250" y="466" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif"
+        font-size="16" letter-spacing="1.5" fill="#B29334" opacity="0.6">KOREAN BEAUTY · NUKUS</text>
+</svg>

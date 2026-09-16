@@ -1,0 +1,9 @@
+# В репозитории — переводы строк LF: сервер на Linux (Render, VPS),
+# а systemd и nginx не понимают CRLF из Windows.
+* text=auto eol=lf
+
+*.png  binary
+*.jpg  binary
+*.webp binary
+*.ico  binary
+*.db   binary

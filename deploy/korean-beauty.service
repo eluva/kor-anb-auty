@@ -1,0 +1,54 @@
+# ==========================================================================
+#  Korean Beauty — служба systemd
+#
+#  Запускает магазин при включении сервера и перезапускает при сбое.
+#
+#  Установка:
+#    sudo cp deploy/korean-beauty.service /etc/systemd/system/
+#    sudo systemctl daemon-reload
+#    sudo systemctl enable --now korean-beauty
+#
+#  Управление:
+#    sudo systemctl status korean-beauty      — работает ли
+#    sudo systemctl restart korean-beauty     — перезапуск после обновления
+#    sudo journalctl -u korean-beauty -f      — журнал в реальном времени
+#    sudo journalctl -u korean-beauty -n 50   — пароль администратора при первом запуске
+# ==========================================================================
+
+[Unit]
+Description=Korean Beauty — интернет-магазин
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=kb
+Group=kb
+WorkingDirectory=/opt/korean-beauty
+
+# Настройки берутся из /opt/korean-beauty/.env (образец — .env.example)
+ExecStart=/usr/bin/node --no-warnings server/index.js
+
+Restart=on-failure
+RestartSec=5
+
+# При остановке магазин получает SIGTERM, дожидается текущих запросов
+# и корректно закрывает базу. 15 секунд с запасом.
+KillSignal=SIGTERM
+TimeoutStopSec=15
+
+# ---- ограничения: если в приложении найдут уязвимость, ущерб минимален ----
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+# Писать можно только в папку данных и в папку резервных копий
+ReadWritePaths=/var/lib/korean-beauty /var/backups/korean-beauty
+
+[Install]
+WantedBy=multi-user.target

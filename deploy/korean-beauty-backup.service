@@ -1,0 +1,14 @@
+# Резервная копия магазина — запускается таймером korean-beauty-backup.timer
+[Unit]
+Description=Korean Beauty — резервная копия
+
+[Service]
+Type=oneshot
+User=kb
+Group=kb
+WorkingDirectory=/opt/korean-beauty
+ExecStart=/usr/bin/node --no-warnings server/backup.js
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/korean-beauty /var/backups/korean-beauty

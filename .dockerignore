@@ -1,0 +1,18 @@
+# В образ не попадает ничего, кроме кода: данные живут в томе /data
+node_modules
+data
+tools
+.shots
+.env
+.env.*
+!.env.example
+*.log
+.git
+.gitignore
+.vscode
+.idea
+Dockerfile
+.dockerignore
+deploy
+README.md
+DEPLOY.md
