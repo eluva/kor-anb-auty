@@ -13,15 +13,26 @@ const path = require('node:path');
 const config = require('./config');
 const db = require('./db');
 
-const PUBLIC_DIR = path.join(__dirname, '..', 'public');
 const THEME_COLOR = '#A65A63';
 const DEFAULT_IMAGE = '/img/og-image.png';
+
+/* Страницы лежат в views/, а не в public/: Vercel раздаёт public/ сам, мимо
+   сервера, и мета-теги для превью не попали бы в HTML.
+   Пути записаны целиком, без переменных: так сборщик Vercel видит,
+   какие файлы нужны серверу, и кладёт их в функцию. */
+const TEMPLATES = {
+  'index.html': path.join(__dirname, '..', 'views', 'index.html'),
+  'catalog.html': path.join(__dirname, '..', 'views', 'catalog.html'),
+  'product.html': path.join(__dirname, '..', 'views', 'product.html'),
+  'checkout.html': path.join(__dirname, '..', 'views', 'checkout.html'),
+  'privacy.html': path.join(__dirname, '..', 'views', 'privacy.html'),
+};
 
 /* Шаблоны кэшируем, но проверяем время изменения файла:
    правки HTML видны сразу, без перезапуска */
 const cache = new Map();
 function template(file) {
-  const full = path.join(PUBLIC_DIR, file);
+  const full = TEMPLATES[file];
   const mtime = fs.statSync(full).mtimeMs;
   const hit = cache.get(full);
   if (hit && hit.mtime === mtime) return hit.html;

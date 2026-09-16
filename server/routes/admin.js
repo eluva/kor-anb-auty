@@ -15,10 +15,10 @@ const { withImages, PRODUCT_FIELDS, FROM_PRODUCTS } = require('./api');
 const router = asyncSafe(express.Router());
 
 /* ---------- загрузка фото ----------
-   Фото хранятся в базе, а не файлами: на бесплатном Render диск стирается
-   при каждом перезапуске. Браузер перед отправкой уменьшает снимок до 1400 px,
-   поэтому 5 МБ на файл — с большим запасом. */
-const MAX_FILE = 5 * 1024 * 1024;
+   Фото хранятся в базе, а не файлами: на Vercel и бесплатном Render диск
+   не сохраняется. Браузер перед отправкой уменьшает снимок до 1400 px
+   и шлёт по одному. 4 МБ — с запасом внутри предела запроса Vercel (4,5 МБ). */
+const MAX_FILE = 4 * 1024 * 1024;
 const ALLOWED = new Map([
   ['.jpg', 'image/jpeg'], ['.jpeg', 'image/jpeg'], ['.png', 'image/png'],
   ['.webp', 'image/webp'], ['.gif', 'image/gif'], ['.avif', 'image/avif'],
@@ -299,7 +299,7 @@ router.patch('/products/:id/stock', async (req, res) => {
 
 /* ---------- загрузка фото ---------- */
 const UPLOAD_ERRORS = {
-  LIMIT_FILE_SIZE:  'Файл слишком большой — максимум 5 МБ',
+  LIMIT_FILE_SIZE:  'Файл слишком большой — максимум 4 МБ',
   LIMIT_FILE_COUNT: 'Можно загрузить не больше 8 фотографий за раз',
 };
 

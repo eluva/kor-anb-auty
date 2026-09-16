@@ -49,7 +49,9 @@ const plural = (n, one, few, many) => {
     warn('не задан KB_PUBLIC_URL', 'Например https://korean-beauty.onrender.com — для превью в Telegram и карты сайта.');
   }
 
-  if (config.trustProxy === true) {
+  if (config.trustProxy === true && process.env.VERCEL) {
+    pass('доверие прокси', 'vercel — адрес посетителя проставляет Vercel');
+  } else if (config.trustProxy === true) {
     fail('KB_TRUST_PROXY=true', 'Любой посетитель подменит свой IP и обойдёт защиту входа. На Render — cloudflare, на VPS — loopback.');
   } else if (process.env.RENDER && typeof config.trustProxy !== 'function') {
     fail(`на Render KB_TRUST_PROXY=${config.trustProxyLabel}`,

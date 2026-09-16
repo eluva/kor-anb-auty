@@ -6,7 +6,7 @@
  *   • локально — файл SQLite data/shop.db;
  *   • на сервере — база Turso (адрес в KB_DB_URL, токен в KB_DB_TOKEN).
  *
- * Зачем Turso: на бесплатном Render диск стирается при каждом перезапуске.
+ * Зачем Turso: на Vercel и бесплатном Render диск не сохраняется.
  * Всё, что должно пережить перезапуск — товары, заказы, настройки, фото, —
  * хранится в базе, а не в файлах сервера.
  *
@@ -15,7 +15,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
-const { createClient } = require('@libsql/client');
 const config = require('./config');
 
 const DATA_DIR = config.dataDir;
@@ -32,6 +31,11 @@ function resolveUrl() {
      без состояния: медленнее на миллисекунды, зато без внезапных ошибок. */
   return config.dbUrl.replace(/^libsql:\/\//, 'https://');
 }
+
+/* Для Turso — веб-версия клиента: она ходит в базу по HTTPS и не грузит
+   нативный модуль SQLite. Vercel этот модуль в сборку не кладёт, и полная
+   версия падала бы там при запуске. Файловой базе нужна полная. */
+const { createClient } = isRemote ? require('@libsql/client/web') : require('@libsql/client');
 
 const url = resolveUrl();
 const client = createClient({

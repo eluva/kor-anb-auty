@@ -622,16 +622,19 @@
         prepared.push(out);
       }
 
-      const fd = new FormData();
-      prepared.forEach((f) => fd.append('images', f));
-
-      status.innerHTML = '<b>Загружаем…</b>';
+      /* По одному фото на запрос: у хостинга есть предел размера запроса
+         (на Vercel 4,5 МБ), и восемь фото разом могли бы в него не влезть */
       try {
-        const res = await fetch('/api/admin/upload', { method: 'POST', body: fd });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Ошибка загрузки');
-        images = [...images, ...data.urls].slice(0, 8);
-        drawImages();
+        for (let i = 0; i < prepared.length; i++) {
+          status.innerHTML = `<b>Загружаем ${prepared.length > 1 ? `${i + 1} из ${prepared.length}` : ''}…</b>`;
+          const fd = new FormData();
+          fd.append('images', prepared[i]);
+          const res = await fetch('/api/admin/upload', { method: 'POST', body: fd });
+          const data = await res.json().catch(() => ({ error: res.status === 413 ? 'Фото слишком большое' : 'Ошибка загрузки' }));
+          if (!res.ok) throw new Error(data.error || 'Ошибка загрузки');
+          images = [...images, ...data.urls].slice(0, 8);
+          drawImages();
+        }
         toast(saved > 100 * 1024
           ? `Фото загружены, сжаты на ${Math.round(saved / 1024 / 1024 * 10) / 10} МБ`
           : 'Фото загружены', 'ok');
@@ -970,9 +973,9 @@
           <div class="card">
             <h3>Резервная копия</h3>
             <p style="color:var(--muted);font-size:.84rem;margin-bottom:0">
-              Все товары, заказы и настройки лежат в файле <code>data/shop.db</code>,
-              а загруженные фото — в <code>data/uploads/</code>. Копируйте папку <code>data/</code>,
-              чтобы сохранить магазин целиком.
+              Товары, заказы, настройки и фото хранятся в одной базе. Копию на свой
+              компьютер делает команда <code>npm run backup</code> — как её запустить
+              для работающего сайта, написано в DEPLOY.md.
             </p>
           </div>
         </div>

@@ -13,6 +13,8 @@ const adminApi = require('./routes/admin');
 
 const app = asyncSafe(express());
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
+const ADMIN_PAGE = path.join(__dirname, '..', 'views', 'admin.html');
+const NOT_FOUND_PAGE = path.join(__dirname, '..', 'views', '404.html');
 const STARTED_AT = Date.now();
 
 app.disable('x-powered-by');
@@ -20,6 +22,46 @@ app.disable('x-powered-by');
 /* Кому верить X-Forwarded-*: только своему прокси (см. config.js).
    Иначе любой посетитель подменит свой IP и обойдёт ограничение попыток входа. */
 app.set('trust proxy', config.trustProxy);
+
+/* ==========================================================================
+   Подготовка базы — один раз на процесс
+   Локально она проходит до открытия порта (start ниже). На Vercel порта нет:
+   платформа сама вызывает приложение, поэтому готовимся на первом запросе.
+   ========================================================================== */
+let ready = null;
+
+function init() {
+  ready ??= (async () => {
+    /* Render и Vercel стирают диск при перезапуске. Без внешней базы магазин
+       проработал бы до первого перезапуска и потерял все заказы — лучше не работать. */
+    const host = process.env.VERCEL ? 'Vercel' : process.env.RENDER ? 'Render' : null;
+    if (host && !db.isRemote) {
+      throw new Error(`на ${host} не задан KB_DB_URL — локальная база сотрётся при перезапуске вместе с заказами. ` +
+        'Укажите KB_DB_URL и KB_DB_TOKEN от Turso в настройках проекта.');
+    }
+    await db.init();
+    const secretSource = await auth.initSecret();
+    const created = await auth.ensureDefaultAdmin();
+    return { secretSource, created };
+  })().catch((e) => { ready = null; throw e; });   // следующий запрос попробует снова
+  return ready;
+}
+
+app.use(async (req, res, next) => {
+  try {
+    const { created } = await init();
+    /* Пароль нового администратора на Vercel виден только в журнале функции */
+    if (created && process.env.VERCEL && !created.logged) {
+      created.logged = true;
+      console.log(`[admin] создан администратор ${created.username}, пароль: ${created.password}`);
+    }
+    next();
+  } catch (e) {
+    console.error('[init] магазин не готов:', e.message);
+    res.status(503).setHeader('Retry-After', '10');
+    res.json({ error: 'Магазин временно недоступен, попробуйте через минуту' });
+  }
+});
 
 /* Сжатие: style.css 57 КБ → около 12 КБ. На мобильном интернете заметно. */
 app.use(compression({ threshold: 1024 }));
@@ -56,8 +98,7 @@ if (config.isProd) {
 }
 
 /* ---------- проверка здоровья ----------
-   Хостинг дёргает этот адрес: если база не отвечает — 503, и процесс перезапускают.
-   Сюда же можно направить внешний «будильник», чтобы бесплатный Render не засыпал. */
+   Хостинг дёргает этот адрес: если база не отвечает — 503. */
 app.get('/healthz', async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   try {
@@ -109,7 +150,7 @@ app.get('/sitemap.xml', async (req, res) => {
 });
 
 /* ---------- фото товаров ----------
-   Хранятся в базе: на бесплатном Render файлы на диске стираются при перезапуске.
+   Хранятся в базе: на Vercel и бесплатном Render файлы на диске не сохраняются.
    Имя уникально и никогда не меняется, поэтому кэш на год безопасен —
    браузер скачает фото один раз, и база не будет нагружаться повторно. */
 app.get('/uploads/:name', async (req, res) => {
@@ -138,7 +179,7 @@ app.use('/api/admin', adminApi);
 app.get(['/admin', '/admin/*'], (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-Robots-Tag', 'noindex, nofollow');
-  res.sendFile(path.join(PUBLIC_DIR, 'admin', 'index.html'));
+  res.sendFile(ADMIN_PAGE);
 });
 
 /* ---------- страницы с мета-тегами для превью ----------
@@ -151,10 +192,10 @@ app.get(['/privacy', '/privacy.html'], seo.privacy);
 app.get(['/checkout', '/checkout.html'], seo.checkout);
 
 /* ---------- статика ----------
-   Страницы, стили и скрипты — no-cache: при отсутствии правок браузер
-   получает пустой 304. Картинки и шрифты — неделя. */
+   Стили и скрипты — no-cache: при отсутствии правок браузер получает пустой 304.
+   Картинки и шрифты — неделя. На Vercel public/ раздаёт сама платформа,
+   и эта строка там не срабатывает. */
 app.use(express.static(PUBLIC_DIR, {
-  extensions: ['html'],
   setHeaders(res, filePath) {
     const longLived = /\.(png|jpe?g|webp|avif|gif|svg|ico|woff2?|ttf)$/i.test(filePath);
     res.setHeader('Cache-Control', longLived ? 'public, max-age=604800' : 'no-cache');
@@ -164,7 +205,7 @@ app.use(express.static(PUBLIC_DIR, {
 /* ---------- 404 и ошибки ---------- */
 app.use((req, res) => {
   if (req.path.startsWith('/api/')) return res.status(404).json({ error: 'Не найдено' });
-  res.status(404).sendFile(path.join(PUBLIC_DIR, '404.html'));
+  res.status(404).sendFile(NOT_FOUND_PAGE);
 });
 
 app.use((err, req, res, next) => {
@@ -181,20 +222,13 @@ app.use((err, req, res, next) => {
 });
 
 /* ==========================================================================
-   Запуск: сначала база, потом приём запросов
+   Запуск своим сервером (npm start, VPS, Render): сначала база, потом порт.
+   На Vercel этот файл только подключается — см. app.js в корне.
    ========================================================================== */
 let server;
 
 async function start() {
-  /* Render стирает диск при каждом перезапуске. Без внешней базы магазин
-     проработал бы до первого перезапуска и потерял все заказы — лучше не стартовать. */
-  if (process.env.RENDER && !db.isRemote) {
-    throw new Error('на Render не задан KB_DB_URL — локальная база сотрётся при перезапуске вместе с заказами. ' +
-      'Укажите KB_DB_URL и KB_DB_TOKEN от Turso: Render → korean-beauty → Environment.');
-  }
-  await db.init();
-  const secretSource = await auth.initSecret();
-  const created = await auth.ensureDefaultAdmin();
+  const { secretSource, created } = await init();
   const { n: productCount } = await db.get('SELECT COUNT(*) AS n FROM products');
 
   server = app.listen(config.port, config.host, () => {
@@ -257,27 +291,30 @@ function shutdown(signal) {
 
   if (server) server.close(finish); else finish();
 }
-process.on('SIGTERM', () => shutdown('SIGTERM'));
-process.on('SIGINT', () => shutdown('SIGINT'));
 
-/* Непойманная ошибка — в журнал и выход: хостинг перезапустит магазин
-   в чистом состоянии, это надёжнее, чем работать «полусломанным» */
-process.on('uncaughtException', (e) => {
-  console.error('[fatal] непойманная ошибка:', e.stack || e);
-  shutdown('uncaughtException');
-});
-process.on('unhandledRejection', (e) => {
-  console.error('[warn] необработанный отказ промиса:', e?.stack || e);
-});
+if (require.main === module) {
+  process.on('SIGTERM', () => shutdown('SIGTERM'));
+  process.on('SIGINT', () => shutdown('SIGINT'));
 
-start().catch((e) => {
-  console.error('\nМагазин не запустился:', e.message);
-  if (/\b40[13]\b|unauthori[sz]ed/i.test(String(e.message))) {
-    console.error('Похоже, не подходит KB_DB_TOKEN. Проверьте токен базы Turso.');
-  } else if (/ENOTFOUND|ECONNREFUSED|fetch failed/i.test(String(e.message))) {
-    console.error('Не удалось связаться с базой. Проверьте KB_DB_URL и интернет.');
-  }
-  process.exit(1);
-});
+  /* Непойманная ошибка — в журнал и выход: хостинг перезапустит магазин
+     в чистом состоянии, это надёжнее, чем работать «полусломанным» */
+  process.on('uncaughtException', (e) => {
+    console.error('[fatal] непойманная ошибка:', e.stack || e);
+    shutdown('uncaughtException');
+  });
+  process.on('unhandledRejection', (e) => {
+    console.error('[warn] необработанный отказ промиса:', e?.stack || e);
+  });
 
-module.exports = { app };
+  start().catch((e) => {
+    console.error('\nМагазин не запустился:', e.message);
+    if (/\b40[13]\b|unauthori[sz]ed/i.test(String(e.message))) {
+      console.error('Похоже, не подходит KB_DB_TOKEN. Проверьте токен базы Turso.');
+    } else if (/ENOTFOUND|ECONNREFUSED|fetch failed/i.test(String(e.message))) {
+      console.error('Не удалось связаться с базой. Проверьте KB_DB_URL и интернет.');
+    }
+    process.exit(1);
+  });
+}
+
+module.exports = { app, init };

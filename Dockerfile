@@ -31,6 +31,7 @@ COPY package.json package-lock.json ./
 RUN npm ci --omit=dev --no-audit --no-fund && npm cache clean --force
 
 COPY server ./server
+COPY views ./views
 COPY public ./public
 
 # Не работаем от root: если в приложении найдут уязвимость,

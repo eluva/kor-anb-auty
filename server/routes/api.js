@@ -2,6 +2,7 @@
 const express = require('express');
 const { asyncSafe } = require('../http');
 const db = require('../db');
+const { waitUntil } = require('@vercel/functions');
 const { notifyNewOrder } = require('../notify');
 const { orderLimiter } = require('../ratelimit');
 
@@ -256,11 +257,13 @@ router.post('/orders', orderLimiter, async (req, res) => {
   res.json({ ok: true, code, total, items: lines });
 
   /* Уведомление продавцу — после ответа покупателю: медленный или недоступный
-     Telegram не должен задерживать оформление */
-  (async () => {
+     Telegram не должен задерживать оформление. waitUntil просит Vercel
+     не замораживать функцию, пока сообщение не уйдёт; на своём сервере
+     он ничего не делает — там процесс и так продолжает работать. */
+  waitUntil((async () => {
     const shipping = delivery === 'delivery' ? await shippingCost(total) : 0;
     await notifyNewOrder({ code, total, customer_name: name, phone, telegram, delivery, address, comment }, lines, shipping);
-  })().catch((e) => console.error(`[telegram] уведомление о заказе ${code} не отправлено:`, e.message));
+  })().catch((e) => console.error(`[telegram] уведомление о заказе ${code} не отправлено:`, e.message)));
 });
 
 module.exports = { router, SKIN_TYPES, CONCERNS, withImages, PRODUCT_FIELDS, FROM_PRODUCTS };

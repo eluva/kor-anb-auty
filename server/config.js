@@ -32,11 +32,19 @@ const isProd = env.NODE_ENV === 'production';
  *   cloudflare               — внутренняя сеть хостинга и узлы Cloudflare.
  *                             Для Render: там перед магазином стоят сразу
  *                             Cloudflare и балансировщик (подробно в proxy.js).
+ *   vercel (на Vercel сам)   — верить заголовку целиком: Vercel перезаписывает
+ *                             X-Forwarded-For настоящим адресом посетителя,
+ *                             подставить свой нельзя. Вне Vercel не действует.
  *   1                        — ровно один прокси перед приложением: Railway, Fly.
  *   false                    — прокси нет, приложение смотрит в интернет напрямую.
  */
 function parseTrustProxy(raw) {
-  const value = String(raw ?? '').trim();
+  const value = String(raw ?? '').trim() || (env.VERCEL ? 'vercel' : '');
+  if (value === 'vercel') {
+    if (env.VERCEL) return true;
+    console.warn('[config] KB_TRUST_PROXY=vercel работает только на Vercel. Используется loopback.');
+    return 'loopback';
+  }
   if (value === '') return 'loopback';
   if (value === 'cloudflare' || value === 'render') return require('./proxy').trustCloudflare;
   if (value === 'true') {
@@ -72,7 +80,7 @@ const config = {
   publicUrl: (env.KB_PUBLIC_URL || '').replace(/\/+$/, ''),
 
   trustProxy: parseTrustProxy(env.KB_TRUST_PROXY),
-  trustProxyLabel: String(env.KB_TRUST_PROXY || '').trim() || 'loopback',
+  trustProxyLabel: String(env.KB_TRUST_PROXY || '').trim() || (env.VERCEL ? 'vercel' : 'loopback'),
 
   backupDir: path.resolve(env.KB_BACKUP_DIR || path.join(env.KB_DATA_DIR || path.join(ROOT, 'data'), 'backups')),
   backupKeep: Math.max(Number(env.KB_BACKUP_KEEP) || 14, 1),
