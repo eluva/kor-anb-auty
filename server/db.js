@@ -273,7 +273,7 @@ const DEFAULT_SETTINGS = {
   city: 'Нукус, Узбекистан',
   address: 'г. Нукус, Республика Каракалпакстан',
   work_hours: 'Ежедневно, 09:00 – 21:00',
-  delivery_city_price: '15000',
+  delivery_city_price: '25000',
   free_delivery_from: '300000',
   hero_note: 'Since 2017',
 };
