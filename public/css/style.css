@@ -417,79 +417,32 @@ em.gold { font-style: italic; color: var(--accent); }
 }
 .hero-stats dd { margin: 5px 0 0; font-size: .9rem; color: var(--ink-2); }
 
+/* Анимированный логотип на прозрачном фоне. Три слоя в одном квадрате:
+   неподвижный кадр (виден сразу), холст с анимацией (сменяет кадр, когда
+   пошло видео) и само видео — невидимое, только источник кадров.
+   Тень возвращает объём: в исходном видео его давал розовый фон. */
 .hero-figure {
-  margin: 0;
-  background: var(--surface);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-md);
-}
-/* Сцена: карточки лежат стопкой и сменяют друг друга плавным проявлением */
-.hero-figure .hf-stage {
   position: relative;
-  display: block;
-  background: var(--blush-2);
+  margin: 0;
   aspect-ratio: 1;
-  overflow: hidden;
 }
-.hero-slide {
+.hero-logo-still,
+.hero-logo-canvas,
+.hero-logo-src {
   position: absolute;
   inset: 0;
-  opacity: 0;
-  transition: opacity .6s var(--ease);
-  pointer-events: none;
+  width: 100%;
+  height: 100%;
 }
-.hero-slide.on { opacity: 1; pointer-events: auto; }
-.hero-figure img { width: 100%; height: 100%; object-fit: cover; }
-
-.hero-figure figcaption {
-  display: flex; justify-content: space-between; align-items: center;
-  gap: 14px;
-  padding: 14px 18px;
-  border-top: 1px solid var(--rule);
-  min-height: 62px;
+.hero-logo-still,
+.hero-logo-canvas {
+  filter: drop-shadow(0 8px 14px rgba(110, 62, 48, .2));
+  transition: opacity .4s var(--ease);
 }
-.hero-cap-text { min-width: 0; }
-.hero-figure figcaption b {
-  display: block;
-  font-size: .95rem; font-weight: 600;
-  line-height: 1.35;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  transition: opacity .3s;
-}
-.hero-figure figcaption .hero-price {
-  color: var(--accent); font-weight: 700;
-  white-space: nowrap; font-variant-numeric: tabular-nums;
-  transition: opacity .3s;
-}
-.hero-figure.swapping figcaption b,
-.hero-figure.swapping figcaption .hero-price { opacity: 0; }
-
-/* Точки: показывают, сколько товаров в показе, и позволяют переключить вручную */
-.hero-dots {
-  position: absolute;
-  left: 0; right: 0; bottom: 12px;
-  display: flex; justify-content: center; gap: 7px;
-  z-index: 2;
-}
-.hero-dots button {
-  width: 26px; height: 26px;
-  padding: 0; border: none; background: none;
-  cursor: pointer;
-  display: grid; place-items: center;
-}
-.hero-dots button::after {
-  content: '';
-  width: 7px; height: 7px;
-  border-radius: 999px;
-  background: rgba(42, 33, 31, .28);
-  transition: background .25s, width .25s var(--ease);
-}
-.hero-dots button:hover::after { background: rgba(42, 33, 31, .5); }
-.hero-dots button[aria-current="true"]::after { background: var(--accent); width: 18px; }
+.hero-logo-canvas { opacity: 0; }
+.hero-logo-src { opacity: 0; pointer-events: none; }
+.hero-figure.animated .hero-logo-canvas { opacity: 1; }
+.hero-figure.animated .hero-logo-still { opacity: 0; }
 
 /* Гарантии */
 .promise {
@@ -1343,12 +1296,10 @@ main, .catalog-layout { scroll-margin-top: calc(var(--header-h) + 12px); }
    и кнопки «В корзину» выстраиваются в один уровень по всему ряду */
 .card-name { min-height: 2.8em; }
 
-/* Точки переключения товара в hero — минимум 32px под палец */
-.hero-dots button { width: 32px; height: 32px; }
 
 /* Длинные слова (названия брендов, адреса) не должны рвать сетку */
 .card-name, .cl-name, .sl-name, .pd-title, .ct-name,
-.sec-head h2, .hero-figure figcaption b { overflow-wrap: anywhere; }
+.sec-head h2 { overflow-wrap: anywhere; }
 
 /* ==========================================================================
    Адаптив — от широкого монитора к самому узкому телефону

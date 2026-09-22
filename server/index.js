@@ -88,7 +88,7 @@ if (config.isProd) {
   app.use((req, res, next) => {
     const t0 = process.hrtime.bigint();
     res.on('finish', () => {
-      if (/^\/(css|js|img|uploads|healthz)\b/.test(req.path)) return;
+      if (/^\/(css|js|img|video|uploads|healthz)\b/.test(req.path)) return;
       const ms = Number(process.hrtime.bigint() - t0) / 1e6;
       const line = `${new Date().toISOString()} ${req.method} ${req.originalUrl} ${res.statusCode} ${ms.toFixed(0)}ms ${req.ip}`;
       (res.statusCode >= 500 ? console.error : console.log)(line);
@@ -193,11 +193,11 @@ app.get(['/checkout', '/checkout.html'], seo.checkout);
 
 /* ---------- статика ----------
    Стили и скрипты — no-cache: при отсутствии правок браузер получает пустой 304.
-   Картинки и шрифты — неделя. На Vercel public/ раздаёт сама платформа,
+   Картинки, шрифты и видео — неделя. На Vercel public/ раздаёт сама платформа,
    и эта строка там не срабатывает. */
 app.use(express.static(PUBLIC_DIR, {
   setHeaders(res, filePath) {
-    const longLived = /\.(png|jpe?g|webp|avif|gif|svg|ico|woff2?|ttf)$/i.test(filePath);
+    const longLived = /\.(png|jpe?g|webp|avif|gif|svg|ico|woff2?|ttf|mp4|webm)$/i.test(filePath);
     res.setHeader('Cache-Control', longLived ? 'public, max-age=604800' : 'no-cache');
   },
 }));

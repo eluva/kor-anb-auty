@@ -42,7 +42,20 @@
       </dl>
     </div>
 
-    <figure class="hero-figure" id="hero-figure"></figure>
+    <!-- Анимированный логотип на прозрачном фоне.
+         Сразу виден неподвижный кадр (WebP с прозрачностью). hero-logo.js запускает
+         видео, убирает розовый фон через WebGL и рисует на холсте. Остаётся кадр,
+         если включено «уменьшить движение» или браузер не умеет WebGL. -->
+    <figure class="hero-figure" id="hero-logo">
+      <img class="hero-logo-still" src="/img/kb-logo-800.webp"
+           srcset="/img/kb-logo-800.webp 800w, /img/kb-logo-1200.webp 1200w"
+           sizes="(max-width: 1080px) min(430px, 100vw - 32px), 560px"
+           width="800" height="800" alt="Korean Beauty — с 2017 года" fetchpriority="high">
+      <canvas class="hero-logo-canvas" width="640" height="640" aria-hidden="true"></canvas>
+      <video class="hero-logo-src" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1">
+        <source src="/video/kb-logo-spin.mp4" type="video/mp4">
+      </video>
+    </figure>
   </div>
 </section>
 
@@ -220,6 +233,7 @@
 
 <script src="/js/icons.js"></script>
 <script src="/js/app.js"></script>
+<script src="/js/hero-logo.js"></script>
 <script src="/js/home.js"></script>
 </body>
 </html>
