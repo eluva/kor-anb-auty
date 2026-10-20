@@ -1156,6 +1156,42 @@ em.gold { font-style: italic; color: var(--accent); }
 }
 .about-cols { margin-top: var(--s-2); }
 .about-cols p { color: var(--ink-2); }
+.about-block { margin-top: var(--s-3); }
+.about-block h3 {
+  font-family: var(--display);
+  font-size: clamp(1.2rem, 1.6vw, 1.4rem);
+  line-height: 1.3;
+  margin: 0 0 10px;
+}
+.about-block p { color: var(--ink-2); }
+.about-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 20px;
+  margin: 0 0 1em;
+  padding: 0;
+  list-style: none;
+  color: var(--ink-2);
+}
+.about-list li { position: relative; padding-left: 18px; }
+.about-list li::before {
+  content: '';
+  position: absolute; left: 0; top: .6em;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.about-aside { position: sticky; top: calc(var(--header-h) + var(--s-2)); }
+.about-stores {
+  margin-top: var(--s-2);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r);
+  padding: var(--s-3);
+}
+.about-stores ul { margin: 0; padding: 0; list-style: none; }
+.about-stores li { padding: 10px 0; border-top: 1px solid var(--rule); font-weight: 500; }
+.about-stores li:first-child { border-top: 0; padding-top: 0; }
 .pullquote + .pullquote { margin-top: var(--s-2); }
 
 .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-2); }
@@ -1359,7 +1395,7 @@ main, .catalog-layout { scroll-margin-top: calc(var(--header-h) + 12px); }
   .filters-toggle { display: inline-flex; }
   .filter-list { max-height: none; }          /* в панели места хватает */
   .product-layout, .checkout-layout, .about-grid, .quiz-grid { grid-template-columns: 1fr; }
-  .gallery, .summary-sticky { position: static; }
+  .gallery, .summary-sticky, .about-aside { position: static; }
   .steps { grid-template-columns: 1fr; }
   .products { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
 }
@@ -1394,6 +1430,8 @@ main, .catalog-layout { scroll-margin-top: calc(var(--header-h) + 12px); }
   .hero-stats { grid-template-columns: repeat(3, 1fr); gap: 10px; }
   .hero-stats dd { font-size: .8rem; }
   .pullquote { padding: var(--s-2); }
+  .about-list { grid-template-columns: 1fr; }
+  .about-stores { padding: var(--s-2); }
   .panel { padding: var(--s-2); }
   .sec-head { gap: var(--s-2); margin-bottom: var(--s-3); }
   .brand-index a { padding: 10px 14px; font-size: .94rem; }
