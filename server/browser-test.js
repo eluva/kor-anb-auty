@@ -330,6 +330,7 @@ process.on('exit', cleanup);
       return el.parentElement?.classList.contains('wrap') ? true : 'родитель: .' + (el.parentElement?.className || '?');
     };
     checks.push(['.about-grid внутри .wrap', inWrap('.about-grid')]);
+    checks.push(['.about-stores внутри .wrap', inWrap('.about-stores')]);
     checks.push(['.steps внутри .wrap', inWrap('.steps')]);
     checks.push(['.cat-grid внутри .wrap', inWrap('.cat-grid')]);
     checks.push(['#featured внутри .wrap', inWrap('#featured')]);
@@ -341,7 +342,7 @@ process.on('exit', cleanup);
 
     /* Ширина контента не должна превышать .wrap */
     const wrapW = Math.round(document.querySelector('.wrap').getBoundingClientRect().width);
-    const wide = [...document.querySelectorAll('.steps, .about-grid, .cat-grid, .products')]
+    const wide = [...document.querySelectorAll('.steps, .about-grid, .about-range, .about-philo, .cat-grid, .products')]
       .filter(el => Math.round(el.getBoundingClientRect().width) > wrapW + 1)
       .map(el => el.className);
 

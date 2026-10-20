@@ -1148,51 +1148,196 @@ em.gold { font-style: italic; color: var(--accent); }
 /* ==========================================================================
    О магазине и доставка
    ========================================================================== */
-.about-grid {
+/* --- О нас: пять блоков, фото чередуются слева и справа --- */
+.about-grid,
+.about-split,
+.about-quote,
+.about-stores {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(28px, 5vw, 72px);
+  align-items: center;
+}
+.about-grid   { grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); }
+.about-split,
+.about-stores { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); }
+.about-quote  { grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr); }
+
+.about-range, .about-split, .about-philo, .about-quote, .about-stores {
+  margin-top: clamp(56px, 8vw, 112px);
+}
+
+.about-title { margin: 2px 0 var(--s-3); }
+.about-text { color: var(--ink-2); }
+.about-grid .lead { color: var(--ink); }
+#about h3.display { margin-bottom: var(--s-2); }
+
+/* Фото: рамка задаёт пропорции, снимок заполняет её целиком */
+.about-photo {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  background: var(--blush-2);
+}
+.about-photo img { width: 100%; height: 100%; object-fit: cover; }
+.about-photo figcaption {
+  position: absolute;
+  left: 14px; bottom: 14px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .92);
+  color: var(--ink);
+  font-size: .84rem;
+  font-weight: 600;
+}
+.about-photo-intro { aspect-ratio: 5 / 4; }
+.about-photo-intro img { object-position: 50% 30%; }
+.about-photo-wide  { aspect-ratio: 21 / 9; }
+.about-photo-wide img { object-position: 50% 45%; }
+.about-photo-tall  { aspect-ratio: 4 / 5; }
+
+/* Ассортимент */
+.about-range-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
   gap: clamp(24px, 4vw, 56px);
-  align-items: start;
+  margin-top: var(--s-4);
 }
-.about-cols { margin-top: var(--s-2); }
-.about-cols p { color: var(--ink-2); }
-.about-block { margin-top: var(--s-3); }
-.about-block h3 {
-  font-family: var(--display);
-  font-size: clamp(1.2rem, 1.6vw, 1.4rem);
-  line-height: 1.3;
-  margin: 0 0 10px;
-}
-.about-block p { color: var(--ink-2); }
-.about-list {
+.about-kicker { color: var(--ink-2); font-weight: 500; }
+.about-range-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px 20px;
-  margin: 0 0 1em;
+  gap: 12px;
+  margin: 0;
   padding: 0;
   list-style: none;
-  color: var(--ink-2);
 }
-.about-list li { position: relative; padding-left: 18px; }
-.about-list li::before {
-  content: '';
-  position: absolute; left: 0; top: .6em;
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--accent);
-}
-.about-aside { position: sticky; top: calc(var(--header-h) + var(--s-2)); }
-.about-stores {
-  margin-top: var(--s-2);
+.about-range-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 16px 18px;
   background: var(--surface);
   border: 1px solid var(--rule);
   border-radius: var(--r);
-  padding: var(--s-3);
+  font-weight: 500;
+  line-height: 1.4;
 }
-.about-stores ul { margin: 0; padding: 0; list-style: none; }
-.about-stores li { padding: 10px 0; border-top: 1px solid var(--rule); font-weight: 500; }
-.about-stores li:first-child { border-top: 0; padding-top: 0; }
-.pullquote + .pullquote { margin-top: var(--s-2); }
+.about-range-list li span {
+  flex-shrink: 0;
+  font-family: var(--display);
+  font-size: 1.15rem;
+  color: var(--accent);
+}
+
+/* Диагностика: три шага */
+.about-steps { display: grid; gap: var(--s-3); margin: var(--s-3) 0; padding: 0; list-style: none; counter-reset: step; }
+.about-steps li {
+  counter-increment: step;
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  gap: 2px 16px;
+}
+.about-steps li::before {
+  content: counter(step, decimal-leading-zero);
+  grid-row: span 2;
+  display: grid; place-items: center;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: .9rem;
+  font-weight: 600;
+}
+.about-steps b { font-weight: 600; }
+.about-steps span { color: var(--ink-2); }
+
+/* Иконки из icons.js: home.js вставляет SVG в <i data-icon> */
+#about i[data-icon] {
+  display: grid; place-items: center;
+  flex-shrink: 0;
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+#about i[data-icon] svg { width: 24px; height: 24px; }
+
+.about-note {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 20px 22px;
+  background: var(--gold-soft);
+  border: 1px solid #EBDDBE;
+  border-radius: var(--r);
+}
+#about .about-note i[data-icon] { background: var(--surface); color: var(--gold); }
+.about-note b { display: block; margin-bottom: 4px; font-weight: 600; }
+.about-note span { color: var(--ink-2); font-size: .95rem; }
+
+/* Философия */
+.about-philo {
+  padding: clamp(28px, 5vw, 64px);
+  background: var(--blush);
+  border-radius: var(--r-lg);
+}
+.about-philo-head { max-width: 64ch; margin-bottom: var(--s-4); }
+.about-principles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-2); }
+.about-principles > div {
+  padding: var(--s-3);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r);
+}
+.about-principles b {
+  display: block;
+  margin: var(--s-2) 0 6px;
+  font-family: var(--display);
+  font-size: 1.35rem;
+  font-weight: 500;
+}
+.about-principles span { color: var(--ink-2); }
+
+/* Цитата */
+.about-quote blockquote { margin: 0; }
+.about-quote blockquote p {
+  margin: 0 0 var(--s-3);
+  font-family: var(--display);
+  font-style: italic;
+  font-size: clamp(1.5rem, 3vw, 2.4rem);
+  line-height: 1.3;
+}
+.about-quote blockquote p::before {
+  content: '«';
+  display: block;
+  margin-bottom: .15em;
+  font-size: 2.2em;
+  line-height: .7;
+  color: var(--accent);
+}
+.about-quote cite { display: block; margin-bottom: var(--s-4); font-style: normal; color: var(--ink-3); }
+.about-cta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); }
+
+/* Магазины */
+.about-stores .about-photo img { object-position: 50% 60%; }
+.about-store-list { display: grid; gap: 12px; margin: var(--s-3) 0; padding: 0; list-style: none; }
+.about-store-list li {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r);
+}
+.about-store-list li > div { flex: 1; min-width: 0; }
+.about-store-list b { display: block; font-family: var(--display); font-size: 1.25rem; font-weight: 500; }
+.about-store-list span { font-size: .9rem; color: var(--ink-3); }
+.about-store-list .link { flex-shrink: 0; }
+.about-hours { display: flex; align-items: center; gap: 12px; margin: 0; color: var(--ink-2); font-weight: 500; }
+#about .about-hours i[data-icon] { width: 40px; height: 40px; }
+#about .about-hours i[data-icon] svg { width: 20px; height: 20px; }
 
 .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-2); }
 .steps > div {
@@ -1395,7 +1540,13 @@ main, .catalog-layout { scroll-margin-top: calc(var(--header-h) + 12px); }
   .filters-toggle { display: inline-flex; }
   .filter-list { max-height: none; }          /* в панели места хватает */
   .product-layout, .checkout-layout, .about-grid, .quiz-grid { grid-template-columns: 1fr; }
-  .gallery, .summary-sticky, .about-aside { position: static; }
+  .gallery, .summary-sticky { position: static; }
+  .about-split, .about-quote, .about-stores, .about-range-body { grid-template-columns: 1fr; }
+  .about-principles { grid-template-columns: 1fr; }
+  .about-photo-tall { aspect-ratio: 4 / 3; }
+  .about-photo-wide { aspect-ratio: 16 / 10; }
+  .about-split .about-photo img { object-position: 50% 35%; }
+  .about-quote .about-photo img { object-position: 50% 55%; }
   .steps { grid-template-columns: 1fr; }
   .products { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
 }
@@ -1430,8 +1581,11 @@ main, .catalog-layout { scroll-margin-top: calc(var(--header-h) + 12px); }
   .hero-stats { grid-template-columns: repeat(3, 1fr); gap: 10px; }
   .hero-stats dd { font-size: .8rem; }
   .pullquote { padding: var(--s-2); }
-  .about-list { grid-template-columns: 1fr; }
-  .about-stores { padding: var(--s-2); }
+  .about-range-list { grid-template-columns: 1fr; }
+  .about-philo { padding: var(--s-3) var(--s-2); }
+  .about-principles > div { padding: var(--s-2); }
+  .about-store-list li { padding: 14px 16px; gap: 12px; }
+  #about i[data-icon] { width: 42px; height: 42px; }
   .panel { padding: var(--s-2); }
   .sec-head { gap: var(--s-2); margin-bottom: var(--s-3); }
   .brand-index a { padding: 10px 14px; font-size: .94rem; }

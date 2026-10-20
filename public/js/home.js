@@ -38,6 +38,10 @@
     ? `По Нукусу — в день заказа, ${money(ship)}${freeFrom ? `; от ${money(freeFrom)} бесплатно` : ''}. По Узбекистану — курьерской службой, 2–4 дня.`
     : 'По Нукусу — в день заказа, бесплатно. По Узбекистану — курьерской службой, 2–4 дня.';
 
+  /* ---------- о нас: иконки и часы работы из настроек ---------- */
+  $$('#about i[data-icon]').forEach((el) => { el.innerHTML = ICON[el.dataset.icon] || ''; });
+  $('#about-hours').textContent = settings.work_hours || '';
+
   /* ---------- индекс брендов ---------- */
   $('#brand-index').innerHTML = brands
     .filter((b) => b.count > 0)
